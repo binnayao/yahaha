@@ -10,17 +10,15 @@ import com.yahaha.domain.entity.Article;
 import com.yahaha.mapper.ArticleMapper;
 import com.yahaha.services.ArticleService;
 import com.yahaha.utils.BeanCopyUtils;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
 
     @Override
-    public ResponseResult<Article> hotArticleList() {
+    public ResponseResult hotArticleList() {
         // 查询热门文章, 封装成 ResponseResult 返回
         LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
         // 必须是正式文章
