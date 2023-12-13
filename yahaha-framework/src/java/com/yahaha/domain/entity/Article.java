@@ -19,34 +19,34 @@ import lombok.NoArgsConstructor;
 @TableName("sg_article")
 public class Article implements Serializable {
     @TableId
-    public Long id;
+    private Long id;
     //标题
-    public String title;
+    private String title;
     //文章内容
-    public String content;
+    private String content;
     //文章摘要
-    public String summary;
+    private String summary;
     //所属分类id
-    public Long categoryId;
+    private Long categoryId;
     //缩略图
-    public String thumbnail;
+    private String thumbnail;
     //是否置顶（0否，1是）
-    public String isTop;
+    private String isTop;
     //状态（0已发布，1草稿）
-    public String status;
+    private String status;
     //访问量
-    public Long viewCount;
+    private Long viewCount;
     //是否允许评论 1是，0否
-    public String isComment;
+    private String isComment;
 
-    public Long createBy;
+    private Long createBy;
 
-    public Date createTime;
+    private Date createTime;
 
-    public Long updateBy;
+    private Long updateBy;
 
-    public Date updateTime;
+    private Date updateTime;
     //删除标志（0代表未删除，1代表已删除）
-    public Integer delFlag;
+    private Integer delFlag;
 }
 
