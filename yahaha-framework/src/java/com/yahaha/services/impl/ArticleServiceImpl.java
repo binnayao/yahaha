@@ -5,17 +5,27 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yahaha.constants.SystemConstants;
 import com.yahaha.domain.ResponseResult;
+import com.yahaha.domain.VO.ArticleListVo;
 import com.yahaha.domain.VO.HotArticleVo;
+import com.yahaha.domain.VO.PageVo;
 import com.yahaha.domain.entity.Article;
+import com.yahaha.domain.entity.Category;
 import com.yahaha.mapper.ArticleMapper;
 import com.yahaha.services.ArticleService;
+import com.yahaha.services.CategoryService;
 import com.yahaha.utils.BeanCopyUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
+import java.util.function.Function;
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
+
+    @Autowired
+    private CategoryService categoryService;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -36,5 +46,28 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
 
         return ResponseResult.okResult(hotArticleVoList);
+    }
+
+    @Override
+    public ResponseResult articleList(Integer pageNum, Integer pageSize, Long categoryId) {
+        // 查询条件
+        LambdaQueryWrapper<Article> queryWrapper = new LambdaQueryWrapper<>();
+        // 如果有 categoryId 就要 查询时要和传入的相同
+        queryWrapper.eq(Objects.nonNull(categoryId) && categoryId > 0, Article::getCategoryId, categoryId);
+        // 状态是正式发布的文章
+        queryWrapper.eq(Article::getStatus, SystemConstants.ARTICLE_STATUS_NORMAL);
+        // 置顶的文章要显示在最前面,对isTop进行排序,降序,isTop为1的显示在上面
+        queryWrapper.orderByDesc(Article::getIsTop);
+        // 分页查询
+        Page<Article> page = new Page<>(pageNum, pageSize == null ? SystemConstants.PAGE_SIZE : pageSize);
+        page(page, queryWrapper);
+
+        // 查询 categoryName
+        page.getRecords().forEach(article -> article.setCategoryName(categoryService.getById(article.getCategoryId()).getName()));
+
+        // 封装查询结果
+        List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(page.getRecords(), ArticleListVo.class);
+        PageVo pageVo = new PageVo(articleListVos, page.getTotal());
+        return ResponseResult.okResult(pageVo);
     }
 }

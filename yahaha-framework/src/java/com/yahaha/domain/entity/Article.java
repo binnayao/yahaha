@@ -3,11 +3,13 @@ package com.yahaha.domain.entity;
 import java.io.Serializable;
 import java.util.Date;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.Accessors;
 
 /**
  * 文章表(Article)表实体类
@@ -17,6 +19,7 @@ import lombok.NoArgsConstructor;
  */
 @Data
 @TableName("sg_article")
+@Accessors(chain = true) // Key让set方法,返回实体类本身
 public class Article implements Serializable {
     @TableId
     private Long id;
@@ -28,6 +31,10 @@ public class Article implements Serializable {
     private String summary;
     //所属分类id
     private Long categoryId;
+
+    @TableField(exist = false) // 标记该字段在数据库不存在
+    // 分类名称
+    private String categoryName;
     //缩略图
     private String thumbnail;
     //是否置顶（0否，1是）
