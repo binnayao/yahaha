@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yahaha.constants.SystemConstants;
 import com.yahaha.domain.ResponseResult;
+import com.yahaha.domain.VO.ArticleDetailVo;
 import com.yahaha.domain.VO.ArticleListVo;
 import com.yahaha.domain.VO.HotArticleVo;
 import com.yahaha.domain.VO.PageVo;
@@ -69,5 +70,12 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         List<ArticleListVo> articleListVos = BeanCopyUtils.copyBeanList(page.getRecords(), ArticleListVo.class);
         PageVo pageVo = new PageVo(articleListVos, page.getTotal());
         return ResponseResult.okResult(pageVo);
+    }
+
+    @Override
+    public ResponseResult getArticleDetail(Long id) {
+        Article articleDetail = getById(id);
+        articleDetail.setCategoryName(categoryService.getById(articleDetail.getCategoryId()).getName());
+        return ResponseResult.okResult(BeanCopyUtils.copyBean(articleDetail, ArticleDetailVo.class));
     }
 }

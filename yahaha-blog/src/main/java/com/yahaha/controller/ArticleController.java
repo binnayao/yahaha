@@ -22,4 +22,9 @@ public class ArticleController {
     public ResponseResult articleList(@RequestParam Integer pageNum, Integer pageSize, Long categoryId) {
         return articleService.articleList(pageNum, pageSize, categoryId);
     }
+
+    @GetMapping("/{id}")
+    public ResponseResult getArticleDetail(@PathVariable("id") Long id) {
+        return articleService.getArticleDetail(id);
+    }
 }
