@@ -8,7 +8,7 @@ import com.yahaha.domain.VO.CategoryVo;
 import com.yahaha.domain.entity.Article;
 import com.yahaha.domain.entity.Category;
 import com.yahaha.mapper.CategoryMapper;
-import com.yahaha.services.CategoryServices;
+import com.yahaha.services.CategoryService;
 import com.yahaha.utils.BeanCopyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class CategoryServicesImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryServices {
+public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
     @Autowired
     private ArticleService articleService;
 
