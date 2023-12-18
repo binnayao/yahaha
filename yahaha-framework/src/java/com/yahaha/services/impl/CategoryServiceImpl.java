@@ -39,7 +39,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
 
         // 查询分类表
         List<Category> categoryList = listByIds(longSet);
-        categoryList = categoryList.stream().filter(category -> category.getStatus().equals(SystemConstants.CATEGORY_STATUS_NORMAL)).toList();
+        categoryList = categoryList.stream().filter(category -> category.getStatus().equals(SystemConstants.CATEGORY_STATUS_NORMAL)).collect(Collectors.toList());
 
         // 封装vo
         return ResponseResult.okResult(BeanCopyUtils.copyBeanList(categoryList, CategoryVo.class));
