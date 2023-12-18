@@ -87,6 +87,7 @@
             <version>13.0</version>
             <scope>compile</scope>
         </dependency>
+        <!-- java9 以上 解码需要装  -->
         <dependency>
             <groupId>javax.xml.bind</groupId>
             <artifactId>jaxb-api</artifactId>
