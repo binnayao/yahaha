@@ -2,6 +2,8 @@ package com.yahaha.config;
 
 import com.yahaha.domain.entity.User;
 import com.yahaha.filter.JwtAuthenticationTokenFilter;
+import com.yahaha.handler.security.AccessDeniedHandlerImpl;
+import com.yahaha.handler.security.AuthenticationEntryPointImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,6 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     JwtAuthenticationTokenFilter jwtAuthenticationTokenFilter;
+
+    @Autowired
+    AuthenticationEntryPointImpl authenticationEntryPoint;
+
+    @Autowired
+    AccessDeniedHandlerImpl accessDeniedHandler;
 
     @Override
     @Bean
@@ -42,9 +50,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 对于登录接口 允许匿名访问
                 .antMatchers("/login").anonymous()
+                .antMatchers("/logout").authenticated()  // logout 必须携带token的
                 // 除上面外的所有请求全部不需要认证即可访问
                 .anyRequest().permitAll();
 
+        // 配置异常处理器
+        http.exceptionHandling().accessDeniedHandler(accessDeniedHandler).authenticationEntryPoint(authenticationEntryPoint);
 
         http.logout().disable();
 
