@@ -10,7 +10,6 @@ import com.yahaha.domain.VO.ArticleListVo;
 import com.yahaha.domain.VO.HotArticleVo;
 import com.yahaha.domain.VO.PageVo;
 import com.yahaha.domain.entity.Article;
-import com.yahaha.domain.entity.Category;
 import com.yahaha.mapper.ArticleMapper;
 import com.yahaha.services.ArticleService;
 import com.yahaha.services.CategoryService;
@@ -20,7 +19,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.function.Function;
 
 @Service
 public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> implements ArticleService {
