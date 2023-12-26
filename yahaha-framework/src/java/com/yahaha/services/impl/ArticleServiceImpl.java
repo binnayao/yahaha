@@ -10,6 +10,7 @@ import com.yahaha.domain.VO.ArticleListVo;
 import com.yahaha.domain.VO.HotArticleVo;
 import com.yahaha.domain.VO.PageVo;
 import com.yahaha.domain.entity.Article;
+import com.yahaha.enums.AppHttpCodeEnum;
 import com.yahaha.mapper.ArticleMapper;
 import com.yahaha.services.ArticleService;
 import com.yahaha.services.CategoryService;
@@ -75,5 +76,17 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
         Article articleDetail = getById(id);
         articleDetail.setCategoryName(categoryService.getById(articleDetail.getCategoryId()).getName());
         return ResponseResult.okResult(BeanCopyUtils.copyBean(articleDetail, ArticleDetailVo.class));
+    }
+
+    @Override
+    public ResponseResult updateViewCount(Long id) {
+        Article article = getById(id);
+        article.setViewCount(article.getViewCount() + 1);
+        boolean res = updateById(article);
+        if (res) {
+            return ResponseResult.okResult();
+        } else {
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+        }
     }
 }
