@@ -9,12 +9,16 @@ import com.yahaha.domain.VO.CommentVo;
 import com.yahaha.domain.VO.PageVo;
 import com.yahaha.domain.entity.Comment;
 import com.yahaha.domain.entity.User;
+import com.yahaha.enums.AppHttpCodeEnum;
+import com.yahaha.exception.SystemException;
 import com.yahaha.mapper.CommentMapper;
 import com.yahaha.services.CommentService;
 import com.yahaha.services.UserService;
 import com.yahaha.utils.BeanCopyUtils;
+import com.yahaha.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -45,6 +49,19 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
         }
 
         return ResponseResult.okResult(new PageVo(commentVoList, pageComment.getTotal()));
+    }
+
+    @Override
+    public ResponseResult addComment(Comment comment) {
+        if (!StringUtils.hasText(comment.getContent())) {
+            throw new SystemException(AppHttpCodeEnum.CONTENT_NOT_NULL);
+        }
+        boolean save = save(comment);
+        if (save) {
+            return ResponseResult.okResult("新建成功");
+        } else {
+            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
+        }
     }
 
     private List<CommentVo> getChildren(Long id) {

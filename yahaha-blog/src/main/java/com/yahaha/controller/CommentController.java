@@ -1,12 +1,10 @@
 package com.yahaha.controller;
 
 import com.yahaha.domain.ResponseResult;
+import com.yahaha.domain.entity.Comment;
 import com.yahaha.services.CommentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/comment")
@@ -19,5 +17,10 @@ public class CommentController {
                                       @RequestParam("pageSize") Integer pageSize,
                                       @RequestParam("articleId") Integer articleId) {
         return commentService.commentList(pageNum, pageSize, articleId);
+    }
+
+    @PostMapping
+    public ResponseResult addComment(@RequestBody Comment comment) {
+        return commentService.addComment(comment);
     }
 }
