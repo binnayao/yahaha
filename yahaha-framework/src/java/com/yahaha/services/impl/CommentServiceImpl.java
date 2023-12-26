@@ -15,7 +15,6 @@ import com.yahaha.mapper.CommentMapper;
 import com.yahaha.services.CommentService;
 import com.yahaha.services.UserService;
 import com.yahaha.utils.BeanCopyUtils;
-import com.yahaha.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -29,11 +28,12 @@ public class CommentServiceImpl extends ServiceImpl<CommentMapper, Comment> impl
     private UserService userService;
 
     @Override
-    public ResponseResult commentList(Integer pageNum, Integer pageSize, Integer articleId) {
+    public ResponseResult commentList(Integer type, Integer pageNum, Integer pageSize, Integer articleId) {
         LambdaQueryWrapper<Comment> commentLambdaQueryWrapper = new LambdaQueryWrapper<>();
         // 查询对应文章的根评论
-        commentLambdaQueryWrapper.eq(Comment::getType, SystemConstants.COMMENT_FOR_PAGE);
-        commentLambdaQueryWrapper.eq(Comment::getArticleId, articleId);
+        commentLambdaQueryWrapper.eq(Comment::getType, type);
+        // 当articleId是文章评论时候,才需要加这个条件
+        commentLambdaQueryWrapper.eq(SystemConstants.COMMENT_FOR_PAGE == type, Comment::getArticleId, articleId);
         // 根评论是-1
         commentLambdaQueryWrapper.eq(Comment::getRootId, SystemConstants.COMMENT_ROOT_ID);
         // 分页查询

@@ -5,7 +5,7 @@ import com.yahaha.domain.ResponseResult;
 import com.yahaha.domain.entity.Comment;
 
 public interface CommentService extends IService<Comment> {
-    ResponseResult commentList(Integer pageNum, Integer pageSize, Integer articleId);
+    ResponseResult commentList(Integer number, Integer pageNum, Integer pageSize, Integer articleId);
 
     ResponseResult addComment(Comment comment);
 }
