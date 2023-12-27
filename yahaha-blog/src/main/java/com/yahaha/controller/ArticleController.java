@@ -1,5 +1,6 @@
 package com.yahaha.controller;
 
+import com.yahaha.annotation.SystemLog;
 import com.yahaha.domain.ResponseResult;
 import com.yahaha.services.ArticleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articleList")
+    @SystemLog(BusinessName = "查询文章列表")
     public ResponseResult articleList(@RequestParam Integer pageNum, Integer pageSize, Long categoryId) {
         return articleService.articleList(pageNum, pageSize, categoryId);
     }
