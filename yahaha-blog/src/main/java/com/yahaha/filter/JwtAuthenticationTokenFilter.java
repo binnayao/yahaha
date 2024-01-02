@@ -1,6 +1,7 @@
 package com.yahaha.filter;
 
 import com.alibaba.fastjson.JSON;
+import com.yahaha.constants.SystemConstants;
 import com.yahaha.domain.ResponseResult;
 import com.yahaha.domain.entity.LoginUser;
 import com.yahaha.enums.AppHttpCodeEnum;
@@ -8,7 +9,6 @@ import com.yahaha.utils.JwtUtil;
 import com.yahaha.utils.RedisCache;
 import com.yahaha.utils.WebUtils;
 import io.jsonwebtoken.Claims;
-import org.apache.poi.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -52,7 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         String userId = claims.getSubject();
         // 从redis中获取用户信息
-        LoginUser loginUser = redisCache.getCacheObject("loginUser:" + userId);
+        LoginUser loginUser = redisCache.getCacheObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + userId);
         // 如果获取不到
         if (Objects.isNull(loginUser)) {
             // 说明登录过期了, 提示重新登录

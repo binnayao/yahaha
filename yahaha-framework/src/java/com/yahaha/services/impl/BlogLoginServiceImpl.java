@@ -1,5 +1,6 @@
 package com.yahaha.services.impl;
 
+import com.yahaha.constants.SystemConstants;
 import com.yahaha.domain.ResponseResult;
 import com.yahaha.domain.VO.BlogUserLoginVo;
 import com.yahaha.domain.VO.UserInfoVo;
@@ -40,7 +41,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         String userId = loginUser.getUser().getId().toString();
         String jwt = JwtUtil.createJWT(userId);
         // 把用户信息存入redis
-        redisCache.setCacheObject("loginUser:" + userId, loginUser);
+        redisCache.setCacheObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + userId, loginUser);
         // 把token和userInfo封装 返回
         // User转换成userInfoVo
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
@@ -55,7 +56,7 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         LoginUser loginUser = (LoginUser) authentication.getPrincipal();
         // 获取userId
         Long userId = loginUser.getUser().getId();
-        redisCache.deleteObject("loginUser:" + userId);
+        redisCache.deleteObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + userId);
         return ResponseResult.okResult();
     }
 }

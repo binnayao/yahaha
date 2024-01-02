@@ -62,8 +62,6 @@ public class LogAspect {
             // 打印请求入参。JSON.toJSONString十FastJson提供的工具方法，能把数组转成JSON
             log.info("传入参数   : {}", JSON.toJSONString(joinPoint.getArgs()));
         }
-
-
     }
 
     private void handleAfter(Object o) {

@@ -9,4 +9,7 @@ public class SystemConstants {
     public static final int COMMENT_ROOT_ID = -1;
     public static final int PAGE_SIZE = 10;
     public static final int PAGE_START_NUM = 1;
+
+    // redis key
+    public static final String REDIS_KEY_LOGIN_USER_PREFIX = "loginUser:";
 }
