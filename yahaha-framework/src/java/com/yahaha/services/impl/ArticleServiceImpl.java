@@ -10,11 +10,11 @@ import com.yahaha.domain.VO.ArticleListVo;
 import com.yahaha.domain.VO.HotArticleVo;
 import com.yahaha.domain.VO.PageVo;
 import com.yahaha.domain.entity.Article;
-import com.yahaha.enums.AppHttpCodeEnum;
 import com.yahaha.mapper.ArticleMapper;
 import com.yahaha.services.ArticleService;
 import com.yahaha.services.CategoryService;
 import com.yahaha.utils.BeanCopyUtils;
+import com.yahaha.utils.RedisCache;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +26,9 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Autowired
     private CategoryService categoryService;
+
+    @Autowired
+    private RedisCache redisCache;
 
     @Override
     public ResponseResult hotArticleList() {
@@ -80,13 +83,8 @@ public class ArticleServiceImpl extends ServiceImpl<ArticleMapper, Article> impl
 
     @Override
     public ResponseResult updateViewCount(Long id) {
-        Article article = getById(id);
-        article.setViewCount(article.getViewCount() + 1);
-        boolean res = updateById(article);
-        if (res) {
-            return ResponseResult.okResult();
-        } else {
-            return ResponseResult.errorResult(AppHttpCodeEnum.SYSTEM_ERROR);
-        }
+        // 更新 redis 中对应id的流量量
+        redisCache.incrementCacheMapValue(SystemConstants.REDIS_KEY_VIEW_COUNT, id.toString(), 1);
+        return null;
     }
 }

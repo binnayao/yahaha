@@ -12,4 +12,5 @@ public class SystemConstants {
 
     // redis key
     public static final String REDIS_KEY_LOGIN_USER_PREFIX = "loginUser:";
+    public static final String REDIS_KEY_VIEW_COUNT = "viewCount";
 }
