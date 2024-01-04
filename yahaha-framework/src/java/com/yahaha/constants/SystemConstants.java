@@ -14,4 +14,9 @@ public class SystemConstants {
     public static final String REDIS_KEY_LOGIN_USER_PREFIX = "loginUser:";
     public static final String REDIS_KEY_ADMIN_LOGIN_USER_PREFIX = "adminLoginUser:";
     public static final String REDIS_KEY_VIEW_COUNT = "viewCount";
+
+    // Menu: M目录 C菜单 F按钮
+    public static final String MENU_TYPE_MENU = "M";
+    public static final String MENU_TYPE_MENU_ITEM = "C";
+    public static final String MENU_TYPE_BUTTON = "F";
 }

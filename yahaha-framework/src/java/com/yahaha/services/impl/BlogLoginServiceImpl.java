@@ -71,8 +71,13 @@ public class BlogLoginServiceImpl implements BlogLoginService {
                 SystemConstants.REDIS_KEY_ADMIN_LOGIN_USER_PREFIX + loginUser.getUser().getId().toString(),
                 loginUser
         );
-        
+
         return ResponseResult.okResult(new BlogUserLoginBaseVo(jwt));
+    }
+
+    @Override
+    public ResponseResult getInfo() {
+        return null;
     }
 
     @Override

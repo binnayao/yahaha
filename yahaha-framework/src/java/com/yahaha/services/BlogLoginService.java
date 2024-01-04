@@ -9,4 +9,6 @@ public interface BlogLoginService {
     ResponseResult logout();
 
     ResponseResult adminLogin(User user);
+
+    ResponseResult getInfo();
 }
