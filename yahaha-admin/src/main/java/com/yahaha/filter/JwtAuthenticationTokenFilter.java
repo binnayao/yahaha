@@ -52,7 +52,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
         String userId = claims.getSubject();
         // 从redis中获取用户信息
-        LoginUser loginUser = redisCache.getCacheObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + "_admin_" + userId);
+        LoginUser loginUser = redisCache.getCacheObject(SystemConstants.REDIS_KEY_ADMIN_LOGIN_USER_PREFIX + userId);
         // 如果获取不到
         if (Objects.isNull(loginUser)) {
             // 说明登录过期了, 提示重新登录

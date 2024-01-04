@@ -2,6 +2,7 @@ package com.yahaha.services.impl;
 
 import com.yahaha.constants.SystemConstants;
 import com.yahaha.domain.ResponseResult;
+import com.yahaha.domain.VO.BlogUserLoginBaseVo;
 import com.yahaha.domain.VO.BlogUserLoginVo;
 import com.yahaha.domain.VO.UserInfoVo;
 import com.yahaha.domain.entity.LoginUser;
@@ -27,9 +28,8 @@ public class BlogLoginServiceImpl implements BlogLoginService {
     @Autowired
     private RedisCache redisCache;
 
-    @Override
-    public ResponseResult login(User user) {
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(user.getUserName(), user.getPassword());
+    public LoginUser getLoginUser(String username, String password) {
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username, password);
         // 会调用 UserDetails 所以项目中需要重写 UserDetails
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
         // 判断是否认证通过
@@ -37,16 +37,42 @@ public class BlogLoginServiceImpl implements BlogLoginService {
             throw new RuntimeException("用户名或密码错误");
         }
         // 获取userId 生成 token
-        LoginUser loginUser = (LoginUser) authenticate.getPrincipal();
+        return (LoginUser) authenticate.getPrincipal();
+    }
+
+    public String getJwtToken(LoginUser loginUser) {
         String userId = loginUser.getUser().getId().toString();
-        String jwt = JwtUtil.createJWT(userId);
+        return JwtUtil.createJWT(userId);
+    }
+
+    @Override
+    public ResponseResult login(User user) {
+        LoginUser loginUser = getLoginUser(user.getUserName(), user.getPassword());
+        String jwt = getJwtToken(loginUser);
+
         // 把用户信息存入redis
-        redisCache.setCacheObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + userId, loginUser);
+        redisCache.setCacheObject(
+                SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + loginUser.getUser().getId().toString(),
+                loginUser
+        );
         // 把token和userInfo封装 返回
         // User转换成userInfoVo
         UserInfoVo userInfoVo = BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class);
         BlogUserLoginVo blogUserLoginVo = new BlogUserLoginVo(jwt, userInfoVo);
         return ResponseResult.okResult(blogUserLoginVo);
+    }
+
+    @Override
+    public ResponseResult adminLogin(User user) {
+        LoginUser loginUser = getLoginUser(user.getUserName(), user.getPassword());
+        String jwt = getJwtToken(loginUser);
+
+        redisCache.setCacheObject(
+                SystemConstants.REDIS_KEY_ADMIN_LOGIN_USER_PREFIX + loginUser.getUser().getId().toString(),
+                loginUser
+        );
+        
+        return ResponseResult.okResult(new BlogUserLoginBaseVo(jwt));
     }
 
     @Override
@@ -59,4 +85,6 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         redisCache.deleteObject(SystemConstants.REDIS_KEY_LOGIN_USER_PREFIX + userId);
         return ResponseResult.okResult();
     }
+
+
 }
