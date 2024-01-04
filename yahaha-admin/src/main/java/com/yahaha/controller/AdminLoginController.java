@@ -10,7 +10,6 @@ import com.yahaha.exception.SystemException;
 import com.yahaha.services.BlogLoginService;
 import com.yahaha.services.MenuService;
 import com.yahaha.services.RoleService;
-import com.yahaha.services.UserRoleService;
 import com.yahaha.utils.BeanCopyUtils;
 import com.yahaha.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;

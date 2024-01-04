@@ -9,8 +9,14 @@ import com.yahaha.services.MenuService;
 import com.yahaha.services.RoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 
 @Service
 public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements RoleService {
 
+    @Override
+    public List<String> selectRoleKeyByUserId(Long userId) {
+        return null;
+    }
 }

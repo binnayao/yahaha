@@ -3,7 +3,6 @@ package com.yahaha.services.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.yahaha.constants.SystemConstants;
-import com.yahaha.domain.entity.LoginUser;
 import com.yahaha.domain.entity.Menu;
 import com.yahaha.mapper.MenuMapper;
 import com.yahaha.services.MenuService;
@@ -13,7 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 
-@Service
+@Service("menuService")
 public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements MenuService {
 
     @Override
