@@ -54,9 +54,15 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
     }
 
     private List<Menu> buildMenuTree(List<Menu> menus) {
-        List<Menu> parentList = menus.stream().filter(menu -> menu.getMenuType().equals(SystemConstants.MENU_TYPE_MENU)).toList();
+        List<Menu> parentList = menus.stream().filter(
+                menu -> menu.getMenuType().equals(SystemConstants.MENU_TYPE_MENU)
+        ).toList();
         parentList.forEach(parent -> {
-            parent.setChildren(menus.stream().filter(menu -> menu.getParentId().equals(parent.getId())).toList());
+            parent.setChildren(
+                    menus.stream().filter(
+                            menu -> menu.getParentId().equals(parent.getId())
+                    ).toList()
+            );
         });
         return parentList;
     }
