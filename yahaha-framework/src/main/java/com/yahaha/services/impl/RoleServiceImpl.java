@@ -9,6 +9,8 @@ import com.yahaha.services.MenuService;
 import com.yahaha.services.RoleService;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -17,6 +19,11 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public List<String> selectRoleKeyByUserId(Long userId) {
+        if (userId == 1L) {
+            List<String> arrayList = new ArrayList<>();
+            arrayList.add("admin");
+            return arrayList;
+        }
         return getBaseMapper().selectRoleKeyByUserId(userId);
     }
 }
