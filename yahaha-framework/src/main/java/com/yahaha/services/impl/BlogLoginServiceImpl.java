@@ -11,6 +11,7 @@ import com.yahaha.services.BlogLoginService;
 import com.yahaha.utils.BeanCopyUtils;
 import com.yahaha.utils.JwtUtil;
 import com.yahaha.utils.RedisCache;
+import com.yahaha.utils.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -75,9 +76,12 @@ public class BlogLoginServiceImpl implements BlogLoginService {
         return ResponseResult.okResult(new BlogUserLoginBaseVo(jwt));
     }
 
+
     @Override
-    public ResponseResult getInfo() {
-        return null;
+    public ResponseResult adminLogout() {
+        Long userId = SecurityUtils.getUserId();
+        redisCache.deleteObject(SystemConstants.REDIS_KEY_ADMIN_LOGIN_USER_PREFIX + userId);
+        return ResponseResult.okResult();
     }
 
     @Override

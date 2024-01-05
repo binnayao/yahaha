@@ -37,6 +37,11 @@ public class AdminLoginController {
         return blogLoginService.adminLogin(user);
     }
 
+    @PostMapping("/user/logout")
+    public ResponseResult logout() {
+        return blogLoginService.adminLogout();
+    }
+
     @GetMapping("/getInfo")
     public ResponseResult getInfo() {
         // 获取登录信息

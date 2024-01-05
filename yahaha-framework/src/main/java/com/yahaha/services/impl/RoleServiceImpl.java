@@ -17,6 +17,6 @@ public class RoleServiceImpl extends ServiceImpl<RoleMapper, Role> implements Ro
 
     @Override
     public List<String> selectRoleKeyByUserId(Long userId) {
-        return null;
+        return getBaseMapper().selectRoleKeyByUserId(userId);
     }
 }

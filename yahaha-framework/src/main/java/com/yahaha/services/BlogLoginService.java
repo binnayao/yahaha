@@ -10,5 +10,5 @@ public interface BlogLoginService {
 
     ResponseResult adminLogin(User user);
 
-    ResponseResult getInfo();
+    ResponseResult adminLogout();
 }
