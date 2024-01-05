@@ -1,7 +1,9 @@
 package com.yahaha.domain.entity;
 
 import java.util.Date;
+import java.util.List;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -58,4 +60,6 @@ public class Menu {
 
     private String delFlag;
 
+    @TableField(exist = false) // 标记该字段在数据库不存在
+    private List<Menu> children;
 }

@@ -2,8 +2,10 @@ package com.yahaha.controller;
 
 import com.yahaha.domain.ResponseResult;
 import com.yahaha.domain.VO.AdminUserInfoVo;
+import com.yahaha.domain.VO.RoutersVo;
 import com.yahaha.domain.VO.UserInfoVo;
 import com.yahaha.domain.entity.LoginUser;
+import com.yahaha.domain.entity.Menu;
 import com.yahaha.domain.entity.User;
 import com.yahaha.enums.AppHttpCodeEnum;
 import com.yahaha.exception.SystemException;
@@ -59,5 +61,12 @@ public class AdminLoginController {
                 BeanCopyUtils.copyBean(loginUser.getUser(), UserInfoVo.class)
         );
         return ResponseResult.okResult(adminUserInfoVo);
+    }
+
+    @GetMapping("/getRouters")
+    public ResponseResult<RoutersVo> getRouters() {
+        Long userId = SecurityUtils.getUserId();
+        List<Menu> menus = menuService.selectRouterMenuTreeByUserId(userId);
+        return ResponseResult.okResult(new RoutersVo(menus));
     }
 }
