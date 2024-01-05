@@ -49,20 +49,18 @@ public class MenuServiceImpl extends ServiceImpl<MenuMapper, Menu> implements Me
             menus = menuMapper.selectRouterMenuTreeByUserId(userId);
         }
         // 构建tree
-        List<Menu> menuTree = buildMenuTree(menus);
-        return menuTree;
+        return buildMenuTree(menus);
     }
 
     private List<Menu> buildMenuTree(List<Menu> menus) {
         List<Menu> parentList = menus.stream().filter(
-                menu -> menu.getMenuType().equals(SystemConstants.MENU_TYPE_MENU)
+                menu -> menu.getParentId() == 0
         ).toList();
         parentList.forEach(parent -> {
-            parent.setChildren(
-                    menus.stream().filter(
-                            menu -> menu.getParentId().equals(parent.getId())
-                    ).toList()
-            );
+            List<Menu> children = menus.stream().filter(
+                    menu -> menu.getParentId().equals(parent.getId())
+            ).toList();
+            parent.setChildren(children);
         });
         return parentList;
     }

@@ -37,4 +37,9 @@ public class Tag {
     //备注
     private String remark;
 
+
+    public Tag(String name, String remark) {
+        this.name = name;
+        this.remark = remark;
+    }
 }
